@@ -28,7 +28,7 @@
 </head>
 <body>
   <h1>Page Cleaner</h1>
-  <p>Enter a URL to fetch its HTML (JavaScript and CSS will be stripped):</p>
+  <p>Enter a URL to fetch its HTML (JavaScript will be stripped, but styles will remain):</p>
   <input type="text" id="url" placeholder="https://example.com">
   <button onclick="loadPage()">Fetch & Clean</button>
 
@@ -42,10 +42,8 @@
         const res = await fetch(proxyUrl);
         let html = await res.text();
 
-        // Strip scripts and styles
+        // Strip only JavaScript
         html = html.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
-        html = html.replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, '');
-        html = html.replace(/<link.*?rel=["']stylesheet["'].*?>/gi, '');
 
         document.getElementById('content').innerHTML = html;
       } catch (err) {
