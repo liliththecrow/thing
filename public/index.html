@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Page Cleaner</title>
+</head>
+<body>
+  <h1>Clean Page Viewer</h1>
+  <input id="url" placeholder="https://example.com" />
+  <button onclick="load()">Fetch</button>
+  <div id="result" style="margin-top:2rem;"></div>
+
+  <script>
+    async function load() {
+      const url = document.getElementById('url').value;
+      const response = await fetch('/fetch?url=' + encodeURIComponent(url));
+      const html = await response.text();
+      document.getElementById('result').innerHTML = html;
+    }
+  </script>
+</body>
+</html>
