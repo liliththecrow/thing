@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clean Web Page Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: #f4f4f4;
+      color: #333;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    #content {
+      margin-top: 2rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      max-width: 800px;
+    }
+    iframe {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Page Cleaner</h1>
+  <p>Enter a URL to fetch its HTML (JavaScript and CSS will be stripped):</p>
+  <input type="text" id="url" placeholder="https://example.com">
+  <button onclick="loadPage()">Fetch & Clean</button>
+
+  <div id="content">Cleaned content will appear here...</div>
+
+  <script>
+    async function loadPage() {
+      const url = document.getElementById('url').value;
+      try {
+        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url); // Free CORS proxy
+        const res = await fetch(proxyUrl);
+        let html = await res.text();
+
+        // Strip scripts and styles
+        html = html.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
+        html = html.replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, '');
+        html = html.replace(/<link.*?rel=["']stylesheet["'].*?>/gi, '');
+
+        document.getElementById('content').innerHTML = html;
+      } catch (err) {
+        document.getElementById('content').innerText = 'Error fetching content: ' + err;
+      }
+    }
+  </script>
+</body>
+</html>
